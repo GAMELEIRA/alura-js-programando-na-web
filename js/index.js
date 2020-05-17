@@ -1,14 +1,52 @@
+const buscarBotao = () => window.document.querySelector("#adicionar-paciente");
+
+const botao = buscarBotao();
+
+console.log(botao);
+
+botao.addEventListener("click", (evento) => {
+
+    evento.preventDefault();
+
+})
+
+const mudarTitulo = (() => {
+
     var titulo = window.document.querySelector("#titulo"); //BUSCA O ELEMENTO NO DOM
-
-    const botao = window.document.querySelector("#adicionar-paciente");
-
-    console.log(window === this);
 
     titulo.textContent = "Gabriel Gameleira"; //ALTERA O VALOR DA TAG
 
-    const pacientes = window.document.querySelectorAll(".paciente"); // BUSCA TODOS
+})();
 
-    // const pacientes = window.document.querySelector(".paciente"); BUSCA UM
+const calcularImcIndex = (peso, altura) => (peso / Math.pow(altura, 2)).toFixed(2);
+
+const validarPesoAltura = (peso, altura) => {
+
+    if (peso < 0 || peso > 100) {
+
+        console.log("Peso inválido");
+
+        return false;
+
+    } else if (altura < 0 || altura > 3.00) {
+
+        console.log("Altura inválida");
+
+        return false;
+
+    }
+
+    return true;
+
+}
+
+// const pacientes = window.document.querySelector(".paciente"); BUSCA UM
+
+const buscarPacientes = () => window.document.querySelectorAll(".paciente"); // BUSCA TODOS
+
+const calcularImcPacientes = ((buscarPacientes) => {
+
+    const pacientes = buscarPacientes();
 
     pacientes.forEach((paciente) => {
 
@@ -16,27 +54,13 @@
 
         const altura = paciente.querySelector(".info-altura").textContent;
 
-        let calcula_imc_ou_nao = true;
+        let calcula_imc_ou_nao = validarPesoAltura(peso, altura);
 
-        if (peso < 0 || peso > 100) {
-
-            console.log("Peso inválido");
-
-            calcula_imc_ou_nao = false;
-
-        } else if (altura < 0 || altura > 3.00) {
-
-            console.log("Altura inválida");
-
-            calcula_imc_ou_nao = false;
-
-        }
-
-        let imc;
+        console.log(calcula_imc_ou_nao);
 
         if (calcula_imc_ou_nao) {
 
-            imc = paciente.querySelector(".info-imc").textContent = (peso / (Math.pow(altura, 2))).toFixed(2);
+            imc = paciente.querySelector(".info-imc").innerHTML = calcularImcIndex(peso, altura);
 
         } else {
 
@@ -46,60 +70,7 @@
 
             paciente.classList.add("paciente_invalido"); //CRIA UMA CLASSE CSS
 
-
         }
     });
 
-    titulo.addEventListener("click", () => {
-
-        console.log("Olá GAMELEIRA!");
-
-    })
-
-    botao.addEventListener("click", (evento) => {
-
-        let tabela = document.querySelector("#tabela-pacientes");
-
-        console.log(tabela);
-
-        event.preventDefault(evento);
-
-        const form = document.querySelector("#form-adiciona");
-
-        const nome = form.nome.value;
-
-        const peso = form.peso.value;
-
-        const altura = form.altura.value;
-
-        const gordura = form.gordura.value;
-
-        const pacientTr = document.createElement("tr");
-
-        const nomeTd = document.createElement("td");
-
-        const pesoTd = document.createElement("td");
-
-        const gorduraTd = document.createElement("td");
-
-        const alturaTd = document.createElement("td");
-
-        nomeTd.textContent = nome;
-
-        pesoTd.textContent = peso;
-
-        alturaTd.textContent = altura;
-
-        gorduraTd.textContent = gordura;
-
-        pacientTr.appendChild(nomeTd);
-
-        pacientTr.appendChild(pesoTd);
-
-        pacientTr.appendChild(gorduraTd);
-
-        pacientTr.appendChild(alturaTd);
-
-        tabela.appendChild(pacientTr);
-
-    });
+})(buscarPacientes);
